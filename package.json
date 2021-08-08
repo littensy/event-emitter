@@ -8,9 +8,13 @@
     "watch": "rbxtsc -w",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "GoodSignal",
+    "task",
+    "roblox-ts"
+  ],
+  "author": "littensy",
+  "license": "MIT",
   "types": "out/index.d.ts",
   "files": [
     "out"
