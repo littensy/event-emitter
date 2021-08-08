@@ -29,7 +29,7 @@ import EventEmitter from "@rbxts/task-event-emitter";
 
 const onChange = new EventEmitter<[property: string]>();
 
-onChange.subscribe((property) => print(`Property ${name} changed!`));
+onChange.subscribe((property) => print(`Property ${property} changed!`));
 
 onChange.emit("Name");
 
