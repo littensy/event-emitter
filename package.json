@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/task-event-emitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Event emitter for roblox-ts using stravant's GoodSignal",
   "main": "out/init.lua",
   "scripts": {
