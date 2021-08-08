@@ -13,13 +13,13 @@ npm i @rbxts/task-event-emitter
 Create an EventEmitter with an array of parameters:
 
 ```ts
-const emitter = new EventEmitter<[player: Player, something: string]>(janitor);
+const emitter = new EventEmitter<[player: Player]>(janitor);
 ```
 
 Or, wrap an RBXScriptSignal:
 
 ```ts
-const onChildAdded = EventEmitter.wrap(object.ChildAdded);
+const onChildAdded = EventEmitter.wrap(object.ChildAdded, janitor);
 ```
 
 ## Example
@@ -27,7 +27,7 @@ const onChildAdded = EventEmitter.wrap(object.ChildAdded);
 ```ts
 import EventEmitter from "@rbxts/task-event-emitter";
 
-const onChange = new EventEmitter<[property: string]>(this.janitor);
+const onChange = new EventEmitter<[property: string]>();
 
 onChange.subscribe((property) => print(`Property ${name} changed!`));
 
@@ -39,7 +39,7 @@ onChange.dispose();
 ```ts
 import EventEmitter from "@rbxts/task-event-emitter";
 
-const emitter = new EventEmitter(this.janitor);
+const emitter = new EventEmitter();
 
 const subscription = emitter.subscribe(() => {});
 
