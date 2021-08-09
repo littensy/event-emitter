@@ -84,6 +84,7 @@ function Subscription:unsubscribe()
 	end
 end
 
+Subscription.Disconnect = Subscription.unsubscribe
 Subscription.Destroy = Subscription.unsubscribe
 
 -- Make Connection strict
@@ -182,6 +183,10 @@ function EventEmitter:wait()
 	end)
 	return coroutine.yield()
 end
+
+EventEmitter.Connect = EventEmitter.subscribe
+EventEmitter.Destroy = EventEmitter.dispose
+EventEmitter.Wait = EventEmitter.wait
 
 -- Make signal strict
 setmetatable(EventEmitter, {

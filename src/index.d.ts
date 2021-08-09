@@ -12,6 +12,16 @@ declare class Subscription {
 	 * Removes the handler from the event.
 	 */
 	unsubscribe(): void;
+	/**
+	 * @alias unsubscribe
+	 * @hidden
+	 */
+	Disconnect(): void;
+	/**
+	 * @alias unsubscribe
+	 * @hidden
+	 */
+	Destroy(): void;
 }
 
 type RBXScriptSignalCallback<T> = T extends RBXScriptSignal<infer F> ? F : never;
@@ -21,7 +31,7 @@ type RBXScriptSignalCallback<T> = T extends RBXScriptSignal<infer F> ? F : never
  *
  * @see https://gist.github.com/stravant/b75a322e0919d60dde8a0316d1f09d2f
  */
-declare class EventEmitter<T extends unknown[] = []> {
+declare class EventEmitter<T extends any[] = any> {
 	/**
 	 * @param janitor - Optional Janitor object to add the emitter to.
 	 */
@@ -65,6 +75,21 @@ declare class EventEmitter<T extends unknown[] = []> {
 	 * Disconnects all handlers and the event proxy if it exists.
 	 */
 	dispose(): void;
+	/**
+	 * @alias subscribe
+	 * @hidden
+	 */
+	Connect(handler: (...params: T) => void): Subscription;
+	/**
+	 * @alias wait
+	 * @hidden
+	 */
+	Wait(): LuaTuple<T>;
+	/**
+	 * @alias dispose
+	 * @hidden
+	 */
+	Destroy(): void;
 }
 
 export = EventEmitter;
