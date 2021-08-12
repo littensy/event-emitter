@@ -70,11 +70,11 @@ declare class EventEmitter<T extends any[] = any> {
 	 * Disconnect all handlers. Since we use a linked list it suffices to clear the
 	 * reference to the head handler.
 	 */
-	disconnectAll(): void;
+	unsubscribeAll(): void;
 	/**
-	 * Disconnects all handlers and the event proxy if it exists.
+	 * Unsubscribes all handlers from the event, and cancels any event wrapping.
 	 */
-	dispose(): void;
+	destroy(): void;
 	/**
 	 * @alias subscribe
 	 * @hidden

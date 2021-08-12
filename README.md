@@ -32,8 +32,6 @@ const onChange = new EventEmitter<[property: string]>();
 onChange.subscribe((property) => print(`Property ${property} changed!`));
 
 onChange.emit("Name");
-
-onChange.dispose();
 ```
 
 ```ts

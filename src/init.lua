@@ -143,12 +143,12 @@ end
 
 -- Disconnect all handlers. Since we use a linked list it suffices to clear the
 -- reference to the head handler.
-function EventEmitter:disconnectAll()
+function EventEmitter:unsubscribeAll()
 	self._handlerListHead = false
 end
 
-function EventEmitter:dispose()
-	self:disconnectAll();
+function EventEmitter:destroy()
+	self:unsubscribeAll();
 	local proxyHandler = rawget(self, "_proxyHandler")
 	if proxyHandler then
 		proxyHandler:Disconnect()
@@ -185,7 +185,7 @@ function EventEmitter:wait()
 end
 
 EventEmitter.Connect = EventEmitter.subscribe
-EventEmitter.Destroy = EventEmitter.dispose
+EventEmitter.Destroy = EventEmitter.destroy
 EventEmitter.Wait = EventEmitter.wait
 
 -- Make signal strict
