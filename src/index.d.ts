@@ -43,6 +43,7 @@ declare class EventEmitter<T extends any[] = any> {
 	 * @param janitor - Optional Janitor object to add the emitter to.
 	 */
 	static wrap<T extends RBXScriptSignal>(
+		this: void,
 		event: T,
 		janitor?: Janitor,
 	): EventEmitter<Parameters<RBXScriptSignalCallback<T>>>;
