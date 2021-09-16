@@ -16,7 +16,7 @@ Create an EventEmitter with an array of parameters:
 const emitter = new EventEmitter<[player: Player]>(janitor);
 ```
 
-Or, wrap an RBXScriptSignal:
+Or, wrap an existing Roblox event:
 
 ```ts
 const onChildAdded = EventEmitter.wrap(object.ChildAdded, janitor);

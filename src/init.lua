@@ -27,6 +27,9 @@
 -- The currently idle thread to run the next handler on
 local freeRunnerThread = nil
 
+-- Promise library
+local Promise = require(script.Promise)
+
 -- Function which acquires the currently idle handler runner thread, runs the
 -- function fn on it, and then releases the thread, returning it to being the
 -- currently idle one.
@@ -139,6 +142,20 @@ function EventEmitter:subscribeOnce(fn)
 		fn(...)
 	end)
 	return cn
+end
+
+function EventEmitter:promisify(predicate)
+	return Promise.fromEvent(self, predicate)
+end
+
+function EventEmitter:once()
+	return Promise.new(function (resolve)
+		local cn;
+		cn = self:subscribe(function (...)
+			cn:unsubscribe()
+			resolve(...)
+		end)
+	end)
 end
 
 -- Disconnect all handlers. Since we use a linked list it suffices to clear the

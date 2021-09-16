@@ -8,53 +8,62 @@ declare class Subscription {
 	 * Whether the handler has been unregistered.
 	 */
 	closed: boolean;
+
 	/**
 	 * Removes the handler from the event.
 	 */
 	unsubscribe(): void;
-	/**
-	 * @alias unsubscribe
-	 * @hidden
-	 */
+
+	/** @deprecated */
 	Disconnect(): void;
-	/**
-	 * @alias unsubscribe
-	 * @hidden
-	 */
+
+	/** @deprecated */
 	Destroy(): void;
 }
-
-type RBXScriptSignalCallback<T> = T extends RBXScriptSignal<infer F> ? F : never;
 
 /**
  * Batched yield-safe signal implementation by stravant
  *
  * @see https://gist.github.com/stravant/b75a322e0919d60dde8a0316d1f09d2f
  */
-declare class EventEmitter<T extends any[] = any> {
+declare class EventEmitter<T extends any[] = []> {
 	/**
 	 * @param janitor - Optional Janitor object to add the emitter to.
 	 */
 	constructor(janitor?: Janitor);
+
 	/**
 	 * Creates an emitter that fires when the given Roblox signal is fired.
 	 *
 	 * @param event - The event to wrap.
 	 * @param janitor - Optional Janitor object to add the emitter to.
 	 */
-	static wrap<T extends RBXScriptSignal>(
+	static wrap<F extends Callback>(
 		this: void,
-		event: T,
+		event: RBXScriptSignal<F>,
 		janitor?: Janitor,
-	): EventEmitter<Parameters<RBXScriptSignalCallback<T>>>;
+	): EventEmitter<Parameters<F>>;
+
 	/**
 	 * Registers a handler for events emitted by this instance.
 	 */
 	subscribe(handler: (...params: T) => void): Subscription;
+
 	/**
-	 * Registers a handler, but disconnects it immediately after the first emit.
+	 * Registers a handler that disconnects immediately after an emission.
 	 */
 	subscribeOnce(handler: (...params: T) => void): Subscription;
+
+	/**
+	 * Return the result of `Promise.fromEvent(emitter, predicate)`.
+	 */
+	promisify(predicate?: (...params: T) => boolean): Promise<T[0]>;
+
+	/**
+	 * Return a promise that resolves with `emitter.subscribeOnce`.
+	 */
+	once(): Promise<T[0]>;
+
 	/**
 	 * `EventEmitter.emit(...)` implemented by running the handler functions on the
 	 * coRunnerThread, and any time the resulting thread yielded without returning
@@ -62,34 +71,29 @@ declare class EventEmitter<T extends any[] = any> {
 	 * over by Roblox scheduling, meaning we have to make a new coroutine runner.
 	 */
 	emit(...params: T): void;
+
 	/**
-	 * Implement `EventEmitter.wait()` in terms of a temporary connection using
-	 * `EventEmitter.subscribeOnce()` which disconnects itself. Blocks the current thread.
+	 * Blocks the current thread until the event fires. Returns the result as a LuaTuple.
 	 */
 	wait(): LuaTuple<T>;
+
 	/**
-	 * Disconnect all handlers. Since we use a linked list it suffices to clear the
-	 * reference to the head handler.
+	 * Disconnect all handlers.
 	 */
 	unsubscribeAll(): void;
+
 	/**
 	 * Unsubscribes all handlers from the event, and cancels any event wrapping.
 	 */
 	destroy(): void;
-	/**
-	 * @alias subscribe
-	 * @hidden
-	 */
+
+	/** @deprecated */
 	Connect(handler: (...params: T) => void): Subscription;
-	/**
-	 * @alias wait
-	 * @hidden
-	 */
+
+	/** @deprecated */
 	Wait(): LuaTuple<T>;
-	/**
-	 * @alias dispose
-	 * @hidden
-	 */
+
+	/** @deprecated */
 	Destroy(): void;
 }
 
