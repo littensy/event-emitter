@@ -28,7 +28,7 @@
 local freeRunnerThread = nil
 
 -- Promise library
-local Promise = require(script.Promise)
+local Promise = _G[script].Promise
 
 -- Function which acquires the currently idle handler runner thread, runs the
 -- function fn on it, and then releases the thread, returning it to being the
@@ -60,6 +60,7 @@ Subscription.__index = Subscription
 function Subscription.new(signal, fn)
 	return setmetatable({
 		closed = false,
+		Connected = true, -- alias for trove compatibility
 		_signal = signal,
 		_fn = fn,
 		_next = false,
@@ -69,6 +70,7 @@ end
 function Subscription:unsubscribe()
 	assert(not self.closed, "Can't disconnect a connection twice.", 2)
 	self.closed = true
+	self.Connected = false
 
 	-- Unhook the node, but DON'T clear it. That way any fire calls that are
 	-- currently sitting on this node will be able to iterate forwards off of
@@ -110,7 +112,11 @@ function EventEmitter.new(janitor)
 		_proxyHandler = nil,
 	}, EventEmitter)
 	if janitor then
-		janitor:Add(self)
+		if janitor.Add then
+			janitor:Add(self)
+		elseif janitor.add then
+			janitor:add(self)
+		end
 	end
 	return self
 end

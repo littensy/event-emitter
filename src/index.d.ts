@@ -1,4 +1,4 @@
-import type { Janitor } from "@rbxts/janitor";
+type JanitorLike = { add(object: any): any } | { Add(object: any): any };
 
 /**
  * Connection class
@@ -15,6 +15,9 @@ declare class Subscription {
 	unsubscribe(): void;
 
 	/** @deprecated */
+	Connected: boolean;
+
+	/** @deprecated */
 	Disconnect(): void;
 
 	/** @deprecated */
@@ -28,20 +31,20 @@ declare class Subscription {
  */
 declare class EventEmitter<T extends any[] = []> {
 	/**
-	 * @param janitor - Optional Janitor object to add the emitter to.
+	 * @param cleanup - Optional Janitor-like object to add the emitter to.
 	 */
-	constructor(janitor?: Janitor);
+	constructor(cleanup?: JanitorLike);
 
 	/**
 	 * Creates an emitter that fires when the given Roblox signal is fired.
 	 *
 	 * @param event - The event to wrap.
-	 * @param janitor - Optional Janitor object to add the emitter to.
+	 * @param cleanup - Optional Janitor-like object to add the emitter to.
 	 */
 	static wrap<F extends Callback>(
 		this: void,
 		event: RBXScriptSignal<F>,
-		janitor?: Janitor,
+		cleanup?: JanitorLike,
 	): EventEmitter<Parameters<F>>;
 
 	/**

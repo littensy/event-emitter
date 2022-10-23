@@ -24,7 +24,6 @@
 	},
 	"devDependencies": {
 		"@rbxts/compiler-types": "^1.2.3-types.0",
-		"@rbxts/janitor": "^1.13.5-ts.2",
 		"@rbxts/types": "^1.0.513",
 		"@typescript-eslint/eslint-plugin": "^4.29.0",
 		"@typescript-eslint/parser": "^4.29.0",
