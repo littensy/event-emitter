@@ -68,7 +68,10 @@ function Subscription.new(signal, fn)
 end
 
 function Subscription:unsubscribe()
-	assert(not self.closed, "Can't disconnect a connection twice.", 2)
+	if self.closed then
+		return
+	end
+
 	self.closed = true
 	self.Connected = false
 
